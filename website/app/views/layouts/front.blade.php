@@ -18,8 +18,8 @@
     @yield('content')
   </main>
 
-  {{ HTML::script('assets/js/vendor/bootstrap.min.js'); }}
   {{ HTML::script('assets/js/vendor/jquery.min.js'); }}
+  {{ HTML::script('assets/js/vendor/bootstrap.min.js'); }}
   {{ HTML::script('assets/js/front.js'); }}
   @yield('js')
 
