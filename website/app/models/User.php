@@ -1,83 +1,30 @@
 <?php
+use Cartalyst\Sentry\Users\Eloquent\User as SentryUserModel;
 
-use Illuminate\Auth\UserInterface;
-use Illuminate\Auth\Reminders\RemindableInterface;
+class User extends SentryUserModel {
 
-class User extends Eloquent implements UserInterface, RemindableInterface {
+	public static $signup_rules = array(
+	   	'first_name' => 'required',
+      'last_name' => 'required',
+      'email'    => 'required|email',
+      'password' => 'required|between:3,32',
+    );
 
 	/**
-	 * The database table used by the model.
+	 * Indicates if the model should soft delete.
 	 *
-	 * @var string
+	 * @var bool
 	 */
-	protected $table = 'users';
+	protected $softDelete = true;
 
 	/**
-	 * The attributes excluded from the model's JSON form.
-	 *
-	 * @var array
-	 */
-	protected $hidden = array('password');
-
-	/**
-	 * Get the unique identifier for the user.
-	 *
-	 * @return mixed
-	 */
-	public function getAuthIdentifier()
-	{
-		return $this->getKey();
-	}
-
-	/**
-	 * Get the password for the user.
+	 * Returns the user full name, it simply concatenates
+	 * the user first and last name.
 	 *
 	 * @return string
 	 */
-	public function getAuthPassword()
-	{
-		return $this->password;
-	}
-
-	/**
-	 * Get the token value for the "remember me" session.
-	 *
-	 * @return string
-	 */
-	public function getRememberToken()
-	{
-		return $this->remember_token;
-	}
-
-	/**
-	 * Set the token value for the "remember me" session.
-	 *
-	 * @param  string  $value
-	 * @return void
-	 */
-	public function setRememberToken($value)
-	{
-		$this->remember_token = $value;
-	}
-
-	/**
-	 * Get the column name for the "remember me" token.
-	 *
-	 * @return string
-	 */
-	public function getRememberTokenName()
-	{
-		return 'remember_token';
-	}
-
-	/**
-	 * Get the e-mail address where password reminders are sent.
-	 *
-	 * @return string
-	 */
-	public function getReminderEmail()
-	{
-		return $this->email;
+	public function fullName() {
+		return "{$this->first_name} {$this->last_name}";
 	}
 
 }

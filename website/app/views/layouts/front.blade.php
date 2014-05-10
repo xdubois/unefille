@@ -14,9 +14,10 @@
 </head>
 <body>
 
-  <main id="site-content">
+ <div class="container">
+    @include('layouts.notifications')
     @yield('content')
-  </main>
+  </div>
 
   {{ HTML::script('assets/js/vendor/jquery.min.js'); }}
   {{ HTML::script('assets/js/vendor/bootstrap.min.js'); }}
