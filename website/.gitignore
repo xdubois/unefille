@@ -9,6 +9,7 @@ Thumbs.db
 *~
 
 /public/files/
+/app/storage/php-console.dat
 
 #projects files
 fille.sublime-workspace
