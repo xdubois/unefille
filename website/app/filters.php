@@ -33,15 +33,46 @@ App::after(function($request, $response)
 |
 */
 
-Route::filter('auth', function()
-{
-	if (Auth::guest()) return Redirect::guest('login');
+
+Route::filter('auth', function() {
+  // Check if the user is logged in
+  if ( ! Sentry::check())
+  {
+    // Store the current uri in the session
+    Session::put('loginRedirect', Request::url());
+
+    // Redirect to the login page
+    return Redirect::route('signin');
+  }
+});
+
+Route::filter('admin-auth', function() {
+  // Check if the user is logged in
+  if ( ! Sentry::check()) {
+    // Store the current uri in the session
+    Session::put('loginRedirect', Request::url());
+
+    // Redirect to the login page
+    return Redirect::route('signin');
+  }
+
+  // Check if the user has access to the admin page
+  if ( ! Sentry::getUser()->hasAccess('admin')) {
+
+    return App::abort(403);
+  }
 });
 
 
 Route::filter('auth.basic', function()
 {
 	return Auth::basic();
+});
+
+Route::filter('ajax-request', function() {
+  if (! Request::ajax()){
+    return Redirect::to('/');
+  }
 });
 
 /*
@@ -71,10 +102,10 @@ Route::filter('guest', function()
 |
 */
 
-Route::filter('csrf', function()
-{
-	if (Session::token() != Input::get('_token'))
-	{
-		throw new Illuminate\Session\TokenMismatchException;
-	}
+Route::filter('csrf', function() {
+  $token = Request::ajax() ? Request::header('X-CSRF-Token') : Input::get('_token');
+  if (Session::token() != $token)
+  {
+    throw new Illuminate\Session\TokenMismatchException;
+  }
 });
