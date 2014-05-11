@@ -11,5 +11,10 @@
       <a href="{{ route('signup') }}"> Sign up </a>
     @endif
   </p>
+
+  <p>
+    <ul id="anibis_last">
+
+  </p>
   
 @stop
