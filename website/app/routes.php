@@ -36,3 +36,10 @@ Route::group(array('prefix' => 'auth'), function() {
   Route::get('logout', array('as' => 'logout', 'uses' => 'AuthController@logout'));
 });
 
+//geo data route
+Route::group(array('prefix' => 'geo'), function() {
+  Route::get('geo/{$city}/{$radius?}', array('as' => 'geo.city', 'uses' => 'GeolocController@getNearestCities'));
+
+});
+
+
